@@ -1,0 +1,6 @@
+{
+  "name": "The Mathematician",
+  "description": "A comprehensive map of prerequisite pathways in mathematics, from foundational logic to advanced research structures.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["Local Storage", "Gamification", "Educational Roadmap"]
+}
