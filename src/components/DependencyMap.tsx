@@ -1,15 +1,21 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Network, Link as LinkIcon, Info } from 'lucide-react';
-import { MathTopic } from '../types';
+import { X, Network, Link as LinkIcon, Info, Lock, CheckCircle2, BookOpen } from 'lucide-react';
+import { MathTopic, UserStats } from '../types';
 
 interface DependencyMapProps {
   topics: MathTopic[];
+  stats: UserStats;
   onClose: () => void;
 }
 
-export default function DependencyMap({ topics, onClose }: DependencyMapProps) {
+export default function DependencyMap({ topics, stats, onClose }: DependencyMapProps) {
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
+
+  const isTopicUnlocked = (topic: MathTopic) => {
+    if (topic.prerequisites.length === 0) return true;
+    return topic.prerequisites.every(id => stats.completedTopicIds.includes(id));
+  };
 
   // Simple layout calculation: group by category
   const categories = useMemo(() => {
@@ -73,6 +79,9 @@ export default function DependencyMap({ topics, onClose }: DependencyMapProps) {
     const isActive = activeIds ? activeIds.has(topicId) : false;
     const isFaded = activeIds && !isActive;
 
+    const targetTopic = topics.find(t => t.id === topicId);
+    const isLocked = targetTopic ? !isTopicUnlocked(targetTopic) : false;
+
     // Node is 192px wide (w-48), 64px high (h-16)
     const startX = start.x + 192;
     const startY = start.y + 32; 
@@ -83,12 +92,14 @@ export default function DependencyMap({ topics, onClose }: DependencyMapProps) {
 
     const pathData = `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`;
 
+    const strokeColor = isLocked ? "#475569" : "#22d3ee"; // Slate-600 vs Cyan-400
+
     return (
-      <g key={`${preId}-${topicId}`} className="transition-opacity duration-300" style={{ opacity: isFaded ? 0.05 : 1 }}>
+      <g key={`${preId}-${topicId}`} className="transition-all duration-300" style={{ opacity: isFaded ? 0.05 : isLocked ? 0.2 : 1 }}>
         <defs>
           <linearGradient id={`grad-${preId}-${topicId}`} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#22d3ee" stopOpacity={isActive ? 0.4 : 0.2} />
-            <stop offset="100%" stopColor="#22d3ee" stopOpacity={isActive ? 1 : 0.8} />
+            <stop offset="0%" stopColor={strokeColor} stopOpacity={isActive ? 0.4 : 0.2} />
+            <stop offset="100%" stopColor={strokeColor} stopOpacity={isActive ? 1 : 0.8} />
           </linearGradient>
         </defs>
         <path
@@ -168,6 +179,8 @@ export default function DependencyMap({ topics, onClose }: DependencyMapProps) {
                 {(categories[cat] || []).map(topic => {
                   const isActive = activeIds ? activeIds.has(topic.id) : true;
                   const isOrigin = highlightedId === topic.id;
+                  const isCompleted = stats.completedTopicIds.includes(topic.id);
+                  const isUnlocked = isTopicUnlocked(topic);
                   
                   return (
                     <button
@@ -177,24 +190,35 @@ export default function DependencyMap({ topics, onClose }: DependencyMapProps) {
                         "w-48 h-16 p-4 rounded-2xl border shadow-xl transition-all group backdrop-blur-sm relative text-left block",
                         isOrigin 
                           ? "bg-cyan-500 border-cyan-400 ring-4 ring-cyan-500/20 z-10" 
-                          : isActive 
-                            ? "bg-slate-900/80 border-slate-800 hover:border-cyan-500/50" 
-                            : "bg-slate-900/20 border-slate-900 opacity-10 grayscale pointer-events-none"
+                          : isCompleted
+                            ? "bg-emerald-500/10 border-emerald-500/30 hover:border-emerald-500"
+                            : isUnlocked
+                              ? "bg-slate-900/80 border-slate-800 hover:border-cyan-500/50"
+                              : "bg-slate-950/20 border-slate-900 opacity-20 grayscale"
                       )}
+                      style={{ opacity: !isActive ? (isOrigin ? 1 : 0.1) : 1 }}
                     >
-                      <div className="flex items-center gap-2 mb-1.5 overflow-hidden">
-                        <LinkIcon className={cn(
-                          "w-2.5 h-2.5 opacity-50 group-hover:opacity-100 flex-shrink-0",
-                          isOrigin ? "text-white" : "text-cyan-400"
-                        )} />
-                        <span className={cn(
-                          "text-[8px] font-black uppercase tracking-widest truncate",
-                          isOrigin ? "text-cyan-100" : "text-slate-600"
-                        )}>{topic.id}</span>
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-1.5 overflow-hidden">
+                          {isCompleted ? (
+                             <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400 shrink-0" />
+                          ) : isUnlocked ? (
+                             <BookOpen className={cn("w-2.5 h-2.5 shrink-0", isOrigin ? "text-white" : "text-cyan-400")} />
+                          ) : (
+                             <Lock className="w-2.5 h-2.5 text-slate-600 shrink-0" />
+                          )}
+                          <span className={cn(
+                            "text-[8px] font-black uppercase tracking-widest truncate",
+                            isOrigin ? "text-cyan-100" : isCompleted ? "text-emerald-500/50" : "text-slate-600"
+                          )}>{topic.id}</span>
+                        </div>
+                        {isCompleted && (
+                          <div className="text-[7px] font-black text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-1 rounded">MASTERED</div>
+                        )}
                       </div>
                       <h3 className={cn(
-                        "text-[11px] font-bold tracking-tight leading-4 line-clamp-2",
-                        isOrigin ? "text-white" : "text-slate-200"
+                        "text-[10px] font-bold tracking-tight leading-4 line-clamp-2",
+                        isOrigin ? "text-white" : isCompleted ? "text-emerald-50" : isUnlocked ? "text-slate-200" : "text-slate-700"
                       )}>{topic.title}</h3>
                     </button>
                   );
@@ -206,9 +230,13 @@ export default function DependencyMap({ topics, onClose }: DependencyMapProps) {
       </main>
 
       <footer className="h-12 border-t border-slate-800/50 bg-slate-900/80 backdrop-blur-md px-8 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-2 text-[9px] font-bold text-slate-600 uppercase tracking-widest">
+        <div className="flex items-center gap-4 text-[9px] font-bold text-slate-600 uppercase tracking-widest">
+          <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3 h-3 text-emerald-400" /> Mastered</div>
+          <div className="flex items-center gap-1.5"><BookOpen className="w-3 h-3 text-cyan-400" /> In Progress</div>
+          <div className="flex items-center gap-1.5"><Lock className="w-3 h-3 text-slate-700" /> Locked</div>
+          <span className="mx-2 text-slate-800">|</span>
           <Info className="w-3 h-3" />
-          <span>Click a node to highlight its prerequisite ancestry • Click empty space to reset</span>
+          <span>Click a node to trace prerequisites</span>
         </div>
         <div className="text-[9px] font-black text-cyan-500/50 uppercase tracking-[0.2em]">
           TOPOGRAPHY ENGINE V3.2

@@ -410,6 +410,7 @@ export default function App() {
         {showDependencyMap && (
           <DependencyMap 
             topics={MATH_TOPICS} 
+            stats={stats}
             onClose={() => setShowDependencyMap(false)} 
           />
         )}
