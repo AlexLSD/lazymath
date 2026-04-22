@@ -25,7 +25,8 @@ import {
   Zap,
   Menu,
   X,
-  Network
+  Network,
+  Trophy
 } from 'lucide-react';
 
 const STORAGE_KEY = 'axiom_math_user_v1';
@@ -47,6 +48,7 @@ export default function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showDependencyMap, setShowDependencyMap] = useState(false);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  const [justUnlocked, setJustUnlocked] = useState<MathTopic[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [confetti] = useState(() => new JSConfetti());
 
@@ -96,9 +98,9 @@ export default function App() {
       return { ...prev, checkedItemIds: newChecked };
     });
   };
-  const isTopicUnlocked = (topic: MathTopic) => {
+  const isTopicUnlocked = (topic: MathTopic, completedIds = stats.completedTopicIds) => {
     if (topic.prerequisites.length === 0) return true;
-    return topic.prerequisites.every(id => stats.completedTopicIds.includes(id));
+    return topic.prerequisites.every(id => completedIds.includes(id));
   };
 
   const categories = useMemo(() => {
@@ -118,13 +120,22 @@ export default function App() {
     const newRank = getRank(newLevel);
     
     const upgraded = newLevel > stats.level;
+    const newCompletedIds = [...stats.completedTopicIds, selectedTopic.id];
+
+    // Find what we just unlocked
+    const unlockedNow = MATH_TOPICS.filter(t => 
+      !stats.completedTopicIds.includes(t.id) && 
+      t.id !== selectedTopic.id &&
+      !isTopicUnlocked(t, stats.completedTopicIds) && // Was locked
+      isTopicUnlocked(t, newCompletedIds) // Is now unlocked
+    );
 
     setStats(prev => ({
       ...prev,
       xp: newXP,
       level: newLevel,
       rank: newRank,
-      completedTopicIds: [...prev.completedTopicIds, selectedTopic.id]
+      completedTopicIds: newCompletedIds
     }));
 
     confetti.addConfetti({
@@ -135,6 +146,10 @@ export default function App() {
 
     if (upgraded) {
       confetti.addConfetti();
+    }
+
+    if (unlockedNow.length > 0) {
+      setJustUnlocked(unlockedNow);
     }
 
     setShowInvestigation(false);
@@ -300,7 +315,18 @@ export default function App() {
                 <p className="text-xs text-slate-400 mb-6 leading-relaxed flex-1 sm:overflow-y-auto custom-scrollbar">
                   {selectedTopic.description}
                   <br /><br />
-                  <span className="text-slate-500 block font-medium">Insights: {selectedTopic.content}</span>
+                  <span className="text-slate-500 block font-medium uppercase tracking-widest text-[9px] mb-1">Theoretical Content:</span>
+                  <span className="text-slate-500">{selectedTopic.content}</span>
+                  {selectedTopic.realLifeApplication && (
+                    <>
+                      <br /><br />
+                      <span className="text-cyan-500 block font-black uppercase tracking-widest text-[9px] mb-1 flex items-center gap-1">
+                        <Zap className="w-2.5 h-2.5" />
+                        Axiomatic Application:
+                      </span>
+                      <span className="text-slate-300 italic">"{selectedTopic.realLifeApplication}"</span>
+                    </>
+                  )}
                 </p>
                 <div className="space-y-4">
                    <div className="flex items-center gap-2">
@@ -404,6 +430,61 @@ export default function App() {
           onSuccess={handleCompleteTopic}
         />
       )}
+
+      {/* Congratulations / Unlocks Modal */}
+      <AnimatePresence>
+        {justUnlocked.length > 0 && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-slate-900 border border-slate-700 w-full max-w-md rounded-3xl p-8 shadow-2xl relative overflow-hidden"
+            >
+              {/* Background Glow */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-cyan-500/20 blur-[100px] pointer-events-none" />
+              
+              <div className="relative z-10 text-center space-y-6">
+                <div className="w-20 h-20 bg-cyan-500/10 rounded-2xl flex items-center justify-center mx-auto border border-cyan-500/20">
+                  <Trophy className="w-10 h-10 text-cyan-400" />
+                </div>
+                
+                <div className="space-y-2">
+                  <h2 className="text-3xl font-black text-white italic tracking-tight uppercase">Topic Mastered!</h2>
+                  <p className="text-slate-400 font-medium">Excellent work, <span className="text-cyan-400">{stats.name}</span>. You've expanded your mathematical horizon.</p>
+                </div>
+
+                <div className="bg-slate-950/50 rounded-2xl p-6 border border-slate-800 space-y-4">
+                  <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center justify-center gap-2">
+                    <TrendingUp className="w-3 h-3" />
+                    New Terrains Unlocked
+                  </h3>
+                  <div className="space-y-3">
+                    {justUnlocked.map(topic => (
+                      <div key={topic.id} className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl border border-slate-700">
+                        <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20">
+                          <BookOpen className="w-4 h-4 text-cyan-400" />
+                        </div>
+                        <div className="text-left">
+                          <div className="text-xs font-bold text-white">{topic.title}</div>
+                          <div className="text-[9px] text-slate-500 uppercase font-black tracking-widest">{topic.category}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setJustUnlocked([])}
+                  className="w-full bg-white text-slate-950 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-cyan-400 transition-colors shadow-lg active:scale-95"
+                >
+                  Continue Journey
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

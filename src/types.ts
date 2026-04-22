@@ -26,6 +26,7 @@ export interface MathTopic {
   prerequisites: string[];
   xpValue: number;
   quiz: QuizQuestion[];
+  realLifeApplication?: string;
 }
 
 export interface UserStats {

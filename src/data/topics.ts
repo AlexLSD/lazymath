@@ -28,7 +28,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'Logic provides the formal language and rules for mathematical derivation.'
       }
-    ]
+    ],
+    realLifeApplication: 'Foundational for critical thinking, building sound arguments in law, and structured problem-solving in any discipline.'
   },
   {
     id: 'arithmetic',
@@ -55,7 +56,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 2,
         explanation: 'Division "undoes" multiplication, just as subtraction undoes addition.'
       }
-    ]
+    ],
+    realLifeApplication: 'Everyday calculations like splitting bills, managing budgets, and measuring ingredients for cooking.'
   },
   {
     id: 'notation',
@@ -110,7 +112,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'The logical AND (∧) is only true if BOTH propositions are true.'
       }
-    ]
+    ],
+    realLifeApplication: 'The core of digital circuit design and software engineering, where "if-then" statements drive all logic.'
   },
   {
     id: 'trigonometry',
@@ -137,7 +140,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 2,
         explanation: 'At π/2 radians (90 degrees), the y-coordinate on the unit circle is 1.'
       }
-    ]
+    ],
+    realLifeApplication: 'Used in navigation (GPS), structural engineering, and understanding sound or radio waves.'
   },
   {
     id: 'functions',
@@ -191,7 +195,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 2,
         explanation: 'The imaginary unit i is defined such that its square is -1.'
       }
-    ]
+    ],
+    realLifeApplication: 'Essential for electrical engineering, fluid dynamics, and quantum mechanics calculations.'
   },
   {
     id: 'set_theory',
@@ -219,7 +224,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 2,
         explanation: 'The power set contains all possible subsets, including the empty set and the set itself.'
       }
-    ]
+    ],
+    realLifeApplication: 'Used in database management and organizing complex information hierarchies.'
   },
   {
     id: 'proof_tech',
@@ -248,7 +254,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 2,
         explanation: 'Proof by contradiction starts by assuming the conclusion is false and showing this leads to an absurdity.'
       }
-    ]
+    ],
+    realLifeApplication: 'Foundational for scientific methods and debate, allowing one to disprove flawed hypotheses by identifying contradictions.'
   },
   {
     id: 'axiomatic',
@@ -390,7 +397,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'Multiplying any matrix by its identity matrix results in the original matrix.'
       }
-    ]
+    ],
+    realLifeApplication: 'Powering 3D graphics (scaling/rotation in games), Google’s PageRank algorithm, and data compression.'
   },
   {
     id: 'group_theory',
@@ -419,7 +427,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'Lagrange\'s theorem states that the order of any subgroup H of a finite group G must divide the order of G.'
       }
-    ]
+    ],
+    realLifeApplication: 'Crucial for cryptography (RSA encryption) and understanding the symmetries of molecular structures in chemistry.'
   },
   {
     id: 'ring_field',
@@ -560,7 +569,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'Continuity at a point means the limit matches the function value at that point, ensuring no jumps or holes.'
       }
-    ]
+    ],
+    realLifeApplication: 'Determining the stability of physical systems and ensuring digital signals transition smoothly without data loss.'
   },
   {
     id: 'seq_series',
@@ -622,7 +632,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'The derivative f\'(x) gives the instantaneous rate of change, which is the slope of the tangent line to the graph of f at x.'
       }
-    ]
+    ],
+    realLifeApplication: 'Calculating velocity from position, optimizing business profits, and modeling the spread of diseases.'
   },
   {
     id: 'vec_calc',
@@ -846,7 +857,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'A homeomorphism is a continuous transformation that preserves the topological properties of a geometric figure.'
       }
-    ]
+    ],
+    realLifeApplication: 'Used in computer-aided design (CAD), understanding DNA folding, and network neutrality analysis.'
   },
   {
     id: 'diff_geom',
@@ -902,7 +914,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'The fundamental group π₁ is the first of the homotopy groups, describing the system of loops that cannot be shrunk to a point.'
       }
-    ]
+    ],
+    realLifeApplication: 'Applied in robotics for motion planning, and in data science (TDA) to find shapes in multi-dimensional datasets.'
   },
   {
     id: 'alg_geom',
@@ -986,7 +999,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'An Eulerian trail (or tour) is a trail in a finite graph that visits every edge exactly once.'
       }
-    ]
+    ],
+    realLifeApplication: 'Optimizing delivery routes (logistics), designing social network algorithms, and managing traffic flow in cities.'
   },
   {
     id: 'num_theory_ele',
@@ -1014,7 +1028,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'Prime numbers are the building blocks of integers, having only 1 and themselves as divisors.'
       }
-    ]
+    ],
+    realLifeApplication: 'The basis for cybersecurity; large prime numbers are the keys used to encrypt almost all online communications.'
   },
   {
     id: 'comp_theory',
@@ -1042,7 +1057,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'The thesis states that a function is effectively calculable if and only if it is computable by a Turing machine.'
       }
-    ]
+    ],
+    realLifeApplication: 'Understanding what modern computers can and cannot do, and setting the limits of silicon-based AI.'
   },
 
   // 6. PROBABILITY & DATA
@@ -1072,7 +1088,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'The CLT is a fundamental theorem stating that the distribution of the sample mean approaches normal, regardless of the population distribution shape, given a sufficiently large sample.'
       }
-    ]
+    ],
+    realLifeApplication: 'Enables polling and market research by allowing us to make predictions about a population from a sample.'
   },
   {
     id: 'stochastic',
@@ -1182,7 +1199,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'PCA is a dimensionality-reduction method that is often used to reduce the dimensionality of large data sets, by transforming a large set of variables into a smaller one.'
       }
-    ]
+    ],
+    realLifeApplication: 'Compressed image formats (like high-quality JPEGs), genomic data analysis, and simplifying complex financial models.'
   },
 
   // 7. APPLIED MATH
@@ -1211,7 +1229,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'Ordinary Differential Equations (ODEs) involve derivatives with respect to a single independent variable, whereas Partial Differential Equations (PDEs) involve partial derivatives with respect to multiple independent variables.'
       }
-    ]
+    ],
+    realLifeApplication: 'Describing how heat spreads, predicting the weather, and modeling the dynamics of financial markets.'
   },
   {
     id: 'numerical',
@@ -1265,7 +1284,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'Linear programming is a method to achieve the best outcome (such as maximum profit or lowest cost) in a mathematical model whose requirements are represented by linear relationships.'
       }
-    ]
+    ],
+    realLifeApplication: 'Determining the most efficient delivery routes, diet planning for nutrition goals, and resource allocation in manufacturing.'
   },
   {
     id: 'dyn_sys',
@@ -1319,7 +1339,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'Itô\'s lemma is a key tool in stochastic calculus, analogous to the chain rule, used to find the differential of a time-dependent function of a stochastic process.'
       }
-    ]
+    ],
+    realLifeApplication: 'The bedrock of quantitative finance, used to price options (Black-Scholes model) and manage financial risk.'
   },
   {
     id: 'math_physics',
@@ -1346,7 +1367,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'Einstein used differential geometry, specifically tensors and curvature on four-dimensional manifolds, to describe the gravitational field.'
       }
-    ]
+    ],
+    realLifeApplication: 'Provides the framework for General Relativity, which is essential for the accuracy of satellite-based systems like GPS.'
   },
 
   // 8. META-MATHEMATICS
@@ -1375,7 +1397,8 @@ export const MATH_TOPICS: MathTopic[] = [
         correctIndex: 1,
         explanation: 'A functor is a mapping between categories that preserves the structure of morphisms and objects, essentially a morphism of categories.'
       }
-    ]
+    ],
+    realLifeApplication: 'Highly influential in functional programming (Haskell/Scala) to create abstract, reusable code patterns.'
   },
   {
     id: 'ergodic_theory',
